@@ -30,6 +30,7 @@ export function StoryEditor({
   const [loading, setLoading] = useState(false);
 
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit,
       Placeholder.configure({

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   ReactFlow,
   Background,
@@ -157,6 +158,7 @@ export function FamilyTreeView({
   initialPersons,
   initialRelations,
 }: FamilyTreeViewProps) {
+  const router = useRouter();
   const [persons, setPersons] = useState(initialPersons);
   const [relations, setRelations] = useState(initialRelations);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -194,6 +196,9 @@ export function FamilyTreeView({
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onNodeDoubleClick={(_event, node) => {
+          router.push(`/tree/${treeId}/person/${node.id}`);
+        }}
         nodeTypes={nodeTypes}
         fitView
         minZoom={0.1}

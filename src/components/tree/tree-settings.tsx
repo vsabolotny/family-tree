@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Settings, UserPlus, Crown, Edit2, Eye } from "lucide-react";
+import { useRef } from "react";
+import { Settings, UserPlus, Crown, Edit2, Eye, Download, Upload, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -40,6 +41,9 @@ const roleLabels: Record<string, string> = {
 
 export function TreeSettings({ tree, members, isOwner }: TreeSettingsProps) {
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [importing, setImporting] = useState(false);
+  const [importResult, setImportResult] = useState<string | null>(null);
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState<"editor" | "viewer">("viewer");
   const [inviting, setInviting] = useState(false);
@@ -190,6 +194,87 @@ export function TreeSettings({ tree, members, isOwner }: TreeSettingsProps) {
           </CardContent>
         </Card>
       )}
+
+      {/* Import / Export */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Import / Export</CardTitle>
+          <CardDescription>
+            GEDCOM-Dateien importieren oder den Stammbaum exportieren.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex flex-wrap gap-3">
+            <a href={`/api/trees/${tree.id}/export/gedcom`} download>
+              <Button variant="outline">
+                <Download className="mr-2 h-4 w-4" />
+                GEDCOM exportieren
+              </Button>
+            </a>
+            <a href={`/api/trees/${tree.id}/export/pdf`} target="_blank" rel="noopener noreferrer">
+              <Button variant="outline">
+                <FileText className="mr-2 h-4 w-4" />
+                PDF / Druckansicht
+              </Button>
+            </a>
+          </div>
+
+          {isOwner && (
+            <div className="border-t pt-4">
+              <p className="text-sm font-medium mb-2">GEDCOM importieren</p>
+              <p className="text-xs text-muted-foreground mb-3">
+                Importiere Personen und Relationen aus einer .ged Datei (Ancestry, MyHeritage etc.).
+                Die importierten Daten werden zum bestehenden Baum hinzugefügt.
+              </p>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".ged,.gedcom"
+                className="hidden"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  setImporting(true);
+                  setImportResult(null);
+
+                  const formData = new FormData();
+                  formData.append("file", file);
+
+                  const res = await fetch(`/api/trees/${tree.id}/import/gedcom`, {
+                    method: "POST",
+                    body: formData,
+                  });
+
+                  const data = await res.json();
+                  if (res.ok) {
+                    setImportResult(
+                      `Erfolgreich importiert: ${data.personsCreated} Personen, ${data.relationsCreated} Relationen.`
+                    );
+                    router.refresh();
+                  } else {
+                    setImportResult(`Fehler: ${data.error}`);
+                  }
+                  setImporting(false);
+                  if (fileInputRef.current) fileInputRef.current.value = "";
+                }}
+              />
+              <Button
+                variant="outline"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={importing}
+              >
+                <Upload className="mr-2 h-4 w-4" />
+                {importing ? "Wird importiert..." : "GEDCOM-Datei auswählen"}
+              </Button>
+              {importResult && (
+                <p className={`text-sm mt-2 ${importResult.startsWith("Fehler") ? "text-destructive" : "text-green-600"}`}>
+                  {importResult}
+                </p>
+              )}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

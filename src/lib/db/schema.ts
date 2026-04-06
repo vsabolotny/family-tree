@@ -241,6 +241,40 @@ export const lifeEvents = pgTable("life_events", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const commentTargetTypeEnum = pgEnum("comment_target_type", [
+  "person",
+  "story",
+]);
+
+export const comments = pgTable("comments", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  familyTreeId: uuid("family_tree_id")
+    .references(() => familyTrees.id, { onDelete: "cascade" })
+    .notNull(),
+  targetType: commentTargetTypeEnum("target_type").notNull(),
+  targetId: uuid("target_id").notNull(),
+  authorUserId: uuid("author_user_id")
+    .references(() => users.id)
+    .notNull(),
+  content: text("content").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const activityLog = pgTable("activity_log", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  familyTreeId: uuid("family_tree_id")
+    .references(() => familyTrees.id, { onDelete: "cascade" })
+    .notNull(),
+  userId: uuid("user_id")
+    .references(() => users.id)
+    .notNull(),
+  action: varchar("action", { length: 100 }).notNull(),
+  targetType: varchar("target_type", { length: 50 }).notNull(),
+  targetId: uuid("target_id"),
+  targetLabel: varchar("target_label", { length: 500 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -255,3 +289,5 @@ export type Media = typeof media.$inferSelect;
 export type Location = typeof locations.$inferSelect;
 export type LifeEvent = typeof lifeEvents.$inferSelect;
 export type FamilyTreeMember = typeof familyTreeMembers.$inferSelect;
+export type Comment = typeof comments.$inferSelect;
+export type ActivityLog = typeof activityLog.$inferSelect;

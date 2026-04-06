@@ -28,6 +28,7 @@ import { StoryEditor } from "@/components/person/story-editor";
 import { MediaUpload } from "@/components/media/media-upload";
 import { MediaGallery } from "@/components/media/media-gallery";
 import { AddLifeEventDialog } from "@/components/person/add-life-event-dialog";
+import { CommentSection } from "@/components/comments/comment-section";
 import type {
   Person,
   Relation,
@@ -450,6 +451,11 @@ export function PersonProfile({
           />
         </TabsContent>
       </Tabs>
+
+      {/* Comments */}
+      <div className="mt-6">
+        <CommentSection treeId={treeId} targetType="person" targetId={person.id} />
+      </div>
     </div>
   );
 }

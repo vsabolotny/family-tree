@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Plus } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { MapPin, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,6 +22,16 @@ interface AddLifeEventDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onEventAdded: (event: LifeEvent) => void;
+}
+
+interface GeoResult {
+  name: string;
+  latitude: number;
+  longitude: number;
+  country: string | null;
+  countryCode: string | null;
+  region: string | null;
+  city: string | null;
 }
 
 const eventTypes = [
@@ -45,15 +55,48 @@ export function AddLifeEventDialog({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Geocoding state
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<GeoResult[]>([]);
+  const [searching, setSearching] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState<GeoResult | null>(null);
+  const searchTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  useEffect(() => {
+    if (searchQuery.length < 2) {
+      setSearchResults([]);
+      return;
+    }
+
+    clearTimeout(searchTimeout.current);
+    searchTimeout.current = setTimeout(async () => {
+      setSearching(true);
+      try {
+        const res = await fetch(`/api/geocode?q=${encodeURIComponent(searchQuery)}`);
+        if (res.ok) {
+          setSearchResults(await res.json());
+        }
+      } catch {
+        // ignore
+      }
+      setSearching(false);
+    }, 400);
+
+    return () => clearTimeout(searchTimeout.current);
+  }, [searchQuery]);
+
+  function selectLocation(result: GeoResult) {
+    setSelectedLocation(result);
+    setSearchQuery(result.city || result.name.split(",")[0]);
+    setSearchResults([]);
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const locationName = formData.get("locationName") as string;
-    const lat = parseFloat(formData.get("latitude") as string);
-    const lng = parseFloat(formData.get("longitude") as string);
 
     const body: Record<string, unknown> = {
       personId,
@@ -64,13 +107,15 @@ export function AddLifeEventDialog({
       endDate: formData.get("endDate") || undefined,
     };
 
-    if (locationName && !isNaN(lat) && !isNaN(lng)) {
+    if (selectedLocation) {
       body.location = {
-        name: locationName,
-        latitude: lat,
-        longitude: lng,
-        country: (formData.get("country") as string) || undefined,
-        city: (formData.get("city") as string) || undefined,
+        name: selectedLocation.city || selectedLocation.name.split(",")[0],
+        latitude: selectedLocation.latitude,
+        longitude: selectedLocation.longitude,
+        country: selectedLocation.country || undefined,
+        countryCode: selectedLocation.countryCode || undefined,
+        region: selectedLocation.region || undefined,
+        city: selectedLocation.city || undefined,
       };
     }
 
@@ -91,6 +136,8 @@ export function AddLifeEventDialog({
       const event = await res.json();
       onEventAdded(event);
       onOpenChange(false);
+      setSelectedLocation(null);
+      setSearchQuery("");
     } catch {
       setError("Ein Fehler ist aufgetreten.");
     } finally {
@@ -155,55 +202,57 @@ export function AddLifeEventDialog({
             />
           </div>
 
+          {/* Location Search */}
           <div className="border-t pt-4">
-            <p className="text-sm font-medium mb-3">Ort</p>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="locationName">Ortsname</Label>
-                <Input
-                  id="locationName"
-                  name="locationName"
-                  placeholder="z.B. Berlin"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="country">Land</Label>
-                <Input
-                  id="country"
-                  name="country"
-                  placeholder="z.B. Deutschland"
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-4 mt-3">
-              <div className="space-y-2">
-                <Label htmlFor="city">Stadt</Label>
-                <Input id="city" name="city" placeholder="Berlin" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="latitude">Breitengrad</Label>
-                <Input
-                  id="latitude"
-                  name="latitude"
-                  type="number"
-                  step="any"
-                  placeholder="52.52"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="longitude">Längengrad</Label>
-                <Input
-                  id="longitude"
-                  name="longitude"
-                  type="number"
-                  step="any"
-                  placeholder="13.405"
-                />
-              </div>
-            </div>
-            <p className="text-xs text-muted-foreground mt-2">
-              Koordinaten findest du z.B. auf Google Maps (Rechtsklick auf Ort).
+            <p className="text-sm font-medium mb-3 flex items-center gap-2">
+              <MapPin className="h-4 w-4" />
+              Ort suchen
             </p>
+            <div className="relative">
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setSelectedLocation(null);
+                }}
+                placeholder="Ort eingeben, z.B. Berlin, Wien, Zürich..."
+                className="pl-9"
+              />
+              {searching && (
+                <span className="absolute right-3 top-2.5 text-xs text-muted-foreground">
+                  Suche...
+                </span>
+              )}
+            </div>
+
+            {searchResults.length > 0 && (
+              <div className="mt-1 rounded-md border bg-popover shadow-md max-h-48 overflow-y-auto">
+                {searchResults.map((result, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => selectLocation(result)}
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-muted transition-colors border-b last:border-b-0"
+                  >
+                    <p className="truncate">{result.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {result.latitude.toFixed(4)}, {result.longitude.toFixed(4)}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {selectedLocation && (
+              <div className="mt-2 rounded-md bg-muted p-2 text-sm">
+                <p className="font-medium">{selectedLocation.city || selectedLocation.name.split(",")[0]}</p>
+                <p className="text-xs text-muted-foreground">
+                  {selectedLocation.country} &bull;{" "}
+                  {selectedLocation.latitude.toFixed(4)}, {selectedLocation.longitude.toFixed(4)}
+                </p>
+              </div>
+            )}
           </div>
 
           {error && <p className="text-sm text-destructive">{error}</p>}

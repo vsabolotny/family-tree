@@ -34,7 +34,7 @@ const navigation = [
 ];
 
 const treeNavigation = [
-  { name: "Stammbaum", href: "/tree", icon: TreePine },
+  { name: "Stammbaum", href: "", icon: TreePine },
   { name: "Personen", href: "/persons", icon: Users },
   { name: "Geschichten", href: "/stories", icon: BookOpen },
   { name: "Medien", href: "/media", icon: Image },
@@ -91,7 +91,9 @@ export function AppSidebar({ user }: AppSidebarProps) {
             </p>
             {treeNavigation.map((item) => {
               const href = `/tree/${treeId}${item.href}`;
-              const isActive = pathname.startsWith(href);
+              const isActive = item.href === ""
+                ? pathname === `/tree/${treeId}`
+                : pathname.startsWith(href);
               return (
                 <Link
                   key={item.name}

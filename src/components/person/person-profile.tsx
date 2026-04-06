@@ -27,6 +27,7 @@ import { Separator } from "@/components/ui/separator";
 import { StoryEditor } from "@/components/person/story-editor";
 import { MediaUpload } from "@/components/media/media-upload";
 import { MediaGallery } from "@/components/media/media-gallery";
+import { AddLifeEventDialog } from "@/components/person/add-life-event-dialog";
 import type {
   Person,
   Relation,
@@ -74,6 +75,8 @@ export function PersonProfile({
   const [personData, setPersonData] = useState(person);
   const [mediaList, setMediaList] = useState(initialMedia);
   const [storyList, setStoryList] = useState(stories);
+  const [eventList, setEventList] = useState(lifeEvents);
+  const [addEventOpen, setAddEventOpen] = useState(false);
 
   const initials =
     (personData.firstName?.[0] || "") + (personData.lastName?.[0] || "");
@@ -312,7 +315,7 @@ export function PersonProfile({
           </TabsTrigger>
           <TabsTrigger value="places">
             <MapPin className="mr-2 h-4 w-4" />
-            Orte ({lifeEvents.length})
+            Orte ({eventList.length})
           </TabsTrigger>
         </TabsList>
 
@@ -403,14 +406,20 @@ export function PersonProfile({
         </TabsContent>
 
         {/* Places Tab */}
-        <TabsContent value="places" className="mt-4">
-          {lifeEvents.length === 0 ? (
+        <TabsContent value="places" className="mt-4 space-y-4">
+          {canEdit && (
+            <Button variant="outline" onClick={() => setAddEventOpen(true)}>
+              <MapPin className="mr-2 h-4 w-4" />
+              Lebensereignis hinzufügen
+            </Button>
+          )}
+          {eventList.length === 0 ? (
             <p className="text-sm text-muted-foreground">
               Noch keine Lebensereignisse erfasst.
             </p>
           ) : (
             <div className="space-y-2">
-              {lifeEvents.map((event) => {
+              {eventList.map((event) => {
                 const loc = locations.find((l) => l.id === event.locationId);
                 return (
                   <div key={event.id} className="flex items-center gap-3 rounded-md border p-3">
@@ -432,6 +441,13 @@ export function PersonProfile({
               })}
             </div>
           )}
+          <AddLifeEventDialog
+            treeId={treeId}
+            personId={person.id}
+            open={addEventOpen}
+            onOpenChange={setAddEventOpen}
+            onEventAdded={(event) => setEventList((prev) => [...prev, event])}
+          />
         </TabsContent>
       </Tabs>
     </div>

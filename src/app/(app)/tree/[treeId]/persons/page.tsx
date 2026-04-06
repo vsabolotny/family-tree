@@ -35,7 +35,7 @@ export default async function PersonsListPage({
       {allPersons.length === 0 ? (
         <p className="text-muted-foreground">
           Noch keine Personen im Familienbaum. Gehe zum{" "}
-          <Link href={`/tree/${treeId}`} className="text-primary hover:underline">
+          <Link href={`/tree/${treeId}`} className="text-secondary-foreground hover:underline">
             Stammbaum
           </Link>{" "}
           um Personen hinzuzufügen.
@@ -49,7 +49,7 @@ export default async function PersonsListPage({
               <Link
                 key={person.id}
                 href={`/tree/${treeId}/person/${person.id}`}
-                className="flex items-center gap-4 rounded-md border p-4 hover:bg-muted transition-colors"
+                className="flex items-center gap-4 rounded-xl bg-surface-low p-4 hover:bg-surface-container transition-colors"
               >
                 <Avatar>
                   <AvatarImage src={person.profileImageUrl || undefined} />

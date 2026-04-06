@@ -13,11 +13,11 @@ export default async function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero */}
-      <header className="border-b">
+      <header className="bg-surface-low">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2">
             <TreePine className="h-6 w-6 text-primary" />
-            <span className="text-lg font-semibold">Stammbaum</span>
+            <span className="text-lg font-semibold font-heading">Stammbaum</span>
           </div>
           <div className="flex items-center gap-3">
             <Link href="/login">
@@ -33,10 +33,10 @@ export default async function Home() {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="max-w-6xl mx-auto px-6 py-24 text-center">
-          <h1 className="text-5xl font-bold tracking-tight mb-6">
+          <h1 className="text-5xl font-bold tracking-tight mb-6 font-heading">
             Deine Familiengeschichte,
             <br />
-            <span className="text-primary">lebendig erzählt</span>
+            <span className="text-primary italic">lebendig erzählt</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
             Dokumentiere deine Familie visuell mit interaktivem Stammbaum,
@@ -45,7 +45,7 @@ export default async function Home() {
           </p>
           <div className="flex items-center justify-center gap-4">
             <Link href="/register">
-              <Button size="lg" className="text-lg px-8 py-6">
+              <Button size="lg" className="text-lg px-8 py-6 shadow-ambient-lg">
                 Kostenlos starten
               </Button>
             </Link>
@@ -53,9 +53,9 @@ export default async function Home() {
         </section>
 
         {/* Features */}
-        <section className="bg-muted/30 py-20">
+        <section className="bg-surface-low py-20">
           <div className="max-w-6xl mx-auto px-6">
-            <h2 className="text-3xl font-bold text-center mb-12">
+            <h2 className="text-3xl font-bold text-center mb-12 font-heading">
               Alles, was deine Familie braucht
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
@@ -95,11 +95,11 @@ export default async function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t py-8">
+      <footer className="bg-surface-low py-8">
         <div className="max-w-6xl mx-auto px-6 text-center text-sm text-muted-foreground">
           <p>
             Stammbaum -- Dein digitales Familienarchiv. DSGVO-konform, gehostet in der EU.{" "}
-            <Link href="/datenschutz" className="text-primary hover:underline">
+            <Link href="/datenschutz" className="text-secondary-foreground hover:underline">
               Datenschutz
             </Link>
           </p>
@@ -119,9 +119,9 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <div className="rounded-lg border bg-card p-6">
-      <div className="text-primary mb-4">{icon}</div>
-      <h3 className="font-semibold text-lg mb-2">{title}</h3>
+    <div className="rounded-2xl bg-card p-6 shadow-ambient">
+      <div className="text-secondary-foreground mb-4">{icon}</div>
+      <h3 className="font-semibold text-lg mb-2 font-heading">{title}</h3>
       <p className="text-muted-foreground text-sm">{description}</p>
     </div>
   );

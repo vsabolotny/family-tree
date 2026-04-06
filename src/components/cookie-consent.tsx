@@ -20,12 +20,12 @@ export function CookieConsent() {
   if (!show) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-card p-4 shadow-lg">
+    <div className="fixed bottom-0 left-0 right-0 z-50 glass p-4 shadow-ambient-lg">
       <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground">
           Diese App verwendet ausschließlich technisch notwendige Cookies für die
           Session-Verwaltung. Keine Tracking-Cookies.{" "}
-          <Link href="/datenschutz" className="text-primary hover:underline">
+          <Link href="/datenschutz" className="text-secondary-foreground hover:underline">
             Datenschutzerklärung
           </Link>
         </p>

@@ -164,7 +164,7 @@ export function PersonProfile({
           <AvatarFallback className="text-xl">{initials}</AvatarFallback>
         </Avatar>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold">
+          <h1 className="text-2xl font-bold font-heading">
             {personData.firstName} {personData.lastName}
           </h1>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -232,7 +232,7 @@ export function PersonProfile({
                     id="gender"
                     name="gender"
                     defaultValue={personData.gender}
-                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs"
+                    className="flex h-9 w-full rounded-sm border-0 border-b-2 border-on-surface-variant/30 bg-surface-high/40 px-3 py-1 text-sm"
                   >
                     <option value="male">Männlich</option>
                     <option value="female">Weiblich</option>
@@ -335,7 +335,7 @@ export function PersonProfile({
                   <Link
                     key={rel.id}
                     href={`/tree/${treeId}/person/${info.other.id}`}
-                    className="flex items-center gap-3 rounded-md border p-3 hover:bg-muted transition-colors"
+                    className="flex items-center gap-3 rounded-xl bg-surface-low p-3 hover:bg-surface-container transition-colors"
                   >
                     <Badge variant="secondary">{info.label}</Badge>
                     <span className="font-medium">
@@ -423,7 +423,7 @@ export function PersonProfile({
               {eventList.map((event) => {
                 const loc = locations.find((l) => l.id === event.locationId);
                 return (
-                  <div key={event.id} className="flex items-center gap-3 rounded-md border p-3">
+                  <div key={event.id} className="flex items-center gap-3 rounded-xl bg-surface-low p-3">
                     <MapPin className="h-4 w-4 text-muted-foreground" />
                     <div>
                       <p className="text-sm font-medium">

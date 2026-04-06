@@ -162,7 +162,7 @@ export function AddLifeEventDialog({
                 id="event-type"
                 name="type"
                 required
-                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs"
+                className="flex h-9 w-full rounded-sm border-0 border-b-2 border-on-surface-variant/30 bg-surface-high/40 px-3 py-1 text-sm"
               >
                 {eventTypes.map((t) => (
                   <option key={t.value} value={t.value}>
@@ -203,7 +203,7 @@ export function AddLifeEventDialog({
           </div>
 
           {/* Location Search */}
-          <div className="border-t pt-4">
+          <div className="pt-4">
             <p className="text-sm font-medium mb-3 flex items-center gap-2">
               <MapPin className="h-4 w-4" />
               Ort suchen
@@ -227,13 +227,13 @@ export function AddLifeEventDialog({
             </div>
 
             {searchResults.length > 0 && (
-              <div className="mt-1 rounded-md border bg-popover shadow-md max-h-48 overflow-y-auto">
+              <div className="mt-1 rounded-xl bg-popover shadow-ambient max-h-48 overflow-y-auto">
                 {searchResults.map((result, i) => (
                   <button
                     key={i}
                     type="button"
                     onClick={() => selectLocation(result)}
-                    className="w-full text-left px-3 py-2 text-sm hover:bg-muted transition-colors border-b last:border-b-0"
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-surface-container transition-colors"
                   >
                     <p className="truncate">{result.name}</p>
                     <p className="text-xs text-muted-foreground">
@@ -245,7 +245,7 @@ export function AddLifeEventDialog({
             )}
 
             {selectedLocation && (
-              <div className="mt-2 rounded-md bg-muted p-2 text-sm">
+              <div className="mt-2 rounded-xl bg-surface-container p-2 text-sm">
                 <p className="font-medium">{selectedLocation.city || selectedLocation.name.split(",")[0]}</p>
                 <p className="text-xs text-muted-foreground">
                   {selectedLocation.country} &bull;{" "}

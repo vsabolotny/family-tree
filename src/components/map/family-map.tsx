@@ -42,14 +42,14 @@ const eventTypeLabels: Record<string, string> = {
 };
 
 const eventTypeColors: Record<string, string> = {
-  residence: "#3b82f6",
-  birth: "#22c55e",
-  death: "#6b7280",
-  education: "#a855f7",
-  occupation: "#f59e0b",
-  migration: "#ef4444",
-  military: "#78716c",
-  custom: "#06b6d4",
+  residence: "#775a19",
+  birth: "#5a7a3a",
+  death: "#6b5c50",
+  education: "#6b4c8a",
+  occupation: "#b8860b",
+  migration: "#8b3a3a",
+  military: "#5c6b5c",
+  custom: "#3c6b6b",
 };
 
 export function FamilyMap({ treeId, markers, mapboxToken }: FamilyMapProps) {
@@ -133,14 +133,14 @@ export function FamilyMap({ treeId, markers, mapboxToken }: FamilyMapProps) {
             }}
           >
             <div
-              className="flex items-center justify-center rounded-full border-2 border-white shadow-md cursor-pointer"
+              className="flex items-center justify-center rounded-full shadow-ambient cursor-pointer"
               style={{
-                backgroundColor: eventTypeColors[group[0].eventType] || "#3b82f6",
+                backgroundColor: eventTypeColors[group[0].eventType] || "#775a19",
                 width: Math.min(20 + group.length * 4, 40),
                 height: Math.min(20 + group.length * 4, 40),
               }}
             >
-              <span className="text-white text-xs font-bold">
+              <span className="text-primary-foreground text-xs font-bold">
                 {group.length > 1 ? group.length : ""}
               </span>
             </div>
@@ -158,7 +158,7 @@ export function FamilyMap({ treeId, markers, mapboxToken }: FamilyMapProps) {
             <div className="p-1 max-w-[250px]">
               <p className="font-medium text-sm">{popup.locationName}</p>
               {popup.country && (
-                <p className="text-xs text-gray-500">{popup.country}</p>
+                <p className="text-xs text-on-surface-variant">{popup.country}</p>
               )}
               <hr className="my-1" />
               {groupedMarkers
@@ -169,15 +169,15 @@ export function FamilyMap({ treeId, markers, mapboxToken }: FamilyMapProps) {
                   <div key={m.id} className="py-1 text-xs">
                     <Link
                       href={`/tree/${treeId}/person/${m.personId}`}
-                      className="text-blue-600 hover:underline font-medium"
+                      className="text-secondary-foreground hover:underline font-medium"
                     >
                       {m.personName}
                     </Link>
-                    <span className="text-gray-500 ml-1">
+                    <span className="text-on-surface-variant ml-1">
                       {eventTypeLabels[m.eventType] || m.eventType}
                     </span>
                     {m.startDate && (
-                      <span className="text-gray-400 ml-1">
+                      <span className="text-muted-foreground ml-1">
                         {m.startDate.substring(0, 4)}
                         {m.endDate && `–${m.endDate.substring(0, 4)}`}
                       </span>

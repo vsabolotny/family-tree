@@ -50,15 +50,15 @@ export async function GET(_request: Request, { params }: RouteParams) {
 <title>${tree?.name || "Stammbaum"}</title>
 <style>
   @page { margin: 2cm; }
-  body { font-family: Georgia, serif; font-size: 12pt; color: #222; max-width: 800px; margin: 0 auto; }
-  h1 { text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; }
-  h2 { margin-top: 30px; color: #444; }
-  .person { margin-bottom: 20px; page-break-inside: avoid; border-left: 3px solid #666; padding-left: 15px; }
-  .person-name { font-size: 14pt; font-weight: bold; }
-  .person-dates { color: #666; font-style: italic; }
+  body { font-family: Georgia, serif; font-size: 12pt; color: #3a2a24; max-width: 800px; margin: 0 auto; background: #fcf9ef; }
+  h1 { text-align: center; color: #421518; padding-bottom: 10px; }
+  h2 { margin-top: 30px; color: #775a19; }
+  .person { margin-bottom: 20px; page-break-inside: avoid; border-left: 3px solid #775a19; padding-left: 15px; }
+  .person-name { font-size: 14pt; font-weight: bold; color: #421518; }
+  .person-dates { color: #8a7a60; font-style: italic; }
   .person-bio { margin-top: 5px; }
-  .relations { margin-top: 5px; font-size: 11pt; color: #555; }
-  .footer { margin-top: 40px; text-align: center; font-size: 9pt; color: #999; border-top: 1px solid #ccc; padding-top: 10px; }
+  .relations { margin-top: 5px; font-size: 11pt; color: #524343; }
+  .footer { margin-top: 40px; text-align: center; font-size: 9pt; color: #8a7a60; padding-top: 10px; }
 </style>
 </head>
 <body>

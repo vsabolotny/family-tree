@@ -40,7 +40,7 @@ export function StoryEditor({
     editorProps: {
       attributes: {
         class:
-          "min-h-[150px] rounded-md border border-input bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring prose prose-sm max-w-none",
+          "min-h-[150px] rounded-sm border-0 border-b-2 border-on-surface-variant/30 bg-surface-high/40 px-3 py-2 text-sm focus-visible:outline-none focus-visible:border-b-primary prose prose-sm max-w-none",
       },
     },
   });
@@ -102,7 +102,7 @@ export function StoryEditor({
         </div>
 
         {/* Toolbar */}
-        <div className="flex gap-1 border rounded-md p-1 w-fit">
+        <div className="flex gap-1 bg-surface-container rounded-xl p-1 w-fit">
           <Button
             type="button"
             variant="ghost"
@@ -154,10 +154,10 @@ export function StoryEditor({
                 key={p.id}
                 type="button"
                 onClick={() => togglePerson(p.id)}
-                className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+                className={`rounded-full px-3 py-1 text-xs transition-colors ${
                   selectedPersonIds.includes(p.id)
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "hover:bg-muted"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-surface-container hover:bg-surface-high"
                 }`}
               >
                 {p.firstName} {p.lastName}

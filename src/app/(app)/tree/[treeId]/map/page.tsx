@@ -85,7 +85,7 @@ export default async function MapPage({
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="border-b p-4">
+      <div className="bg-surface-low p-4">
         <h1 className="text-xl font-semibold">Weltkarte</h1>
         <p className="text-sm text-muted-foreground">
           Orte, an denen deine Familie gelebt hat

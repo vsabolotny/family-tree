@@ -85,60 +85,69 @@ export function FamilyTimeline({ items, groups }: FamilyTimelineProps) {
           font-family: inherit;
         }
         .vis-item {
-          border-radius: 4px;
+          border-radius: 6px;
           font-size: 12px;
         }
         .vis-item.lifespan {
-          background-color: hsl(var(--primary));
-          border-color: hsl(var(--primary));
-          color: white;
+          background-color: #421518;
+          border-color: #5d2a2c;
+          color: #faf5e8;
         }
         .vis-item.event-residence {
-          background-color: #3b82f6;
-          border-color: #2563eb;
-          color: white;
+          background-color: #775a19;
+          border-color: #9a7520;
+          color: #faf5e8;
         }
         .vis-item.event-birth {
-          background-color: #22c55e;
-          border-color: #16a34a;
-          color: white;
+          background-color: #5a7a3a;
+          border-color: #4a6830;
+          color: #faf5e8;
         }
         .vis-item.event-death {
-          background-color: #6b7280;
-          border-color: #4b5563;
-          color: white;
+          background-color: #6b5c50;
+          border-color: #574a40;
+          color: #faf5e8;
         }
         .vis-item.event-education {
-          background-color: #a855f7;
-          border-color: #9333ea;
-          color: white;
+          background-color: #6b4c8a;
+          border-color: #5a3d78;
+          color: #faf5e8;
         }
         .vis-item.event-occupation {
-          background-color: #f59e0b;
-          border-color: #d97706;
-          color: white;
+          background-color: #b8860b;
+          border-color: #9a7209;
+          color: #faf5e8;
         }
         .vis-item.event-migration {
-          background-color: #ef4444;
-          border-color: #dc2626;
-          color: white;
+          background-color: #8b3a3a;
+          border-color: #6d2c2c;
+          color: #faf5e8;
         }
         .vis-item.event-military {
-          background-color: #78716c;
-          border-color: #57534e;
-          color: white;
+          background-color: #5c6b5c;
+          border-color: #4a584a;
+          color: #faf5e8;
         }
         .vis-item.event-custom {
-          background-color: #06b6d4;
-          border-color: #0891b2;
-          color: white;
+          background-color: #3c6b6b;
+          border-color: #2d5555;
+          color: #faf5e8;
         }
         .vis-label {
           font-size: 13px;
           font-weight: 500;
         }
         .vis-group {
-          border-bottom: 1px solid hsl(var(--border));
+          border-bottom: 1px solid #e0d5c0;
+        }
+        .vis-time-axis .vis-text {
+          color: #8a7a60;
+        }
+        .vis-time-axis .vis-grid.vis-major {
+          border-color: #e0d5c0;
+        }
+        .vis-time-axis .vis-grid.vis-minor {
+          border-color: #f0e8d4;
         }
       `}</style>
       <div ref={containerRef} className="h-full w-full" />

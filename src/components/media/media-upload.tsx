@@ -85,7 +85,7 @@ export function MediaUpload({
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
           onClick={() => inputRef.current?.click()}
-          className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-8 cursor-pointer hover:border-primary/50 transition-colors"
+          className="flex flex-col items-center justify-center rounded-2xl bg-surface-container/50 p-8 cursor-pointer hover:bg-surface-container transition-colors"
         >
           <Upload className="h-8 w-8 text-muted-foreground mb-2" />
           <p className="text-sm text-muted-foreground">
@@ -110,7 +110,7 @@ export function MediaUpload({
             {files.map((file, i) => (
               <div
                 key={i}
-                className="flex items-center justify-between rounded-md border p-2 text-sm"
+                className="flex items-center justify-between rounded-xl bg-surface-low p-2 text-sm"
               >
                 <span className="truncate">{file.name}</span>
                 <div className="flex items-center gap-2">
@@ -154,10 +154,10 @@ export function MediaUpload({
                     key={p.id}
                     type="button"
                     onClick={() => togglePerson(p.id)}
-                    className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+                    className={`rounded-full px-3 py-1 text-xs transition-colors ${
                       selectedPersonIds.includes(p.id)
-                        ? "bg-primary text-primary-foreground border-primary"
-                        : "hover:bg-muted"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-surface-container hover:bg-surface-high"
                     }`}
                   >
                     {p.firstName} {p.lastName}

@@ -130,7 +130,7 @@ export function AddPersonDialog({
               <select
                 id="gender"
                 name="gender"
-                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs"
+                className="flex h-9 w-full rounded-sm border-0 border-b-2 border-on-surface-variant/30 bg-surface-high/40 px-3 py-1 text-sm"
                 defaultValue="unknown"
               >
                 <option value="male">Männlich</option>
@@ -165,7 +165,7 @@ export function AddPersonDialog({
                 <select
                   id="relatedPerson"
                   name="relatedPerson"
-                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs"
+                  className="flex h-9 w-full rounded-sm border-0 border-b-2 border-on-surface-variant/30 bg-surface-high/40 px-3 py-1 text-sm"
                 >
                   <option value="">-- Keine Verknüpfung --</option>
                   {persons.map((p) => (
@@ -181,7 +181,7 @@ export function AddPersonDialog({
                 <select
                   id="relationType"
                   name="relationType"
-                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs"
+                  className="flex h-9 w-full rounded-sm border-0 border-b-2 border-on-surface-variant/30 bg-surface-high/40 px-3 py-1 text-sm"
                 >
                   <option value="child">Ist Kind von</option>
                   <option value="parent">Ist Elternteil von</option>

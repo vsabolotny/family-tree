@@ -58,10 +58,10 @@ export function AppSidebar({ user }: AppSidebarProps) {
     .slice(0, 2);
 
   return (
-    <aside className="flex w-64 flex-col border-r bg-muted/30">
+    <aside className="flex w-64 flex-col bg-surface-low">
       <div className="flex items-center gap-2 p-4">
         <TreePine className="h-6 w-6 text-primary" />
-        <span className="text-lg font-semibold">Stammbaum</span>
+        <span className="text-lg font-semibold font-heading">Stammbaum</span>
       </div>
 
       <Separator />
@@ -72,10 +72,10 @@ export function AppSidebar({ user }: AppSidebarProps) {
             key={item.name}
             href={item.href}
             className={cn(
-              "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
               pathname === item.href
-                ? "bg-primary/10 text-primary"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:bg-secondary hover:text-foreground"
             )}
           >
             <item.icon className="h-4 w-4" />
@@ -86,7 +86,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
         {treeId && (
           <>
             <Separator className="my-2" />
-            <p className="px-3 py-1 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+            <p className="px-3 py-1 text-[0.65rem] font-semibold text-muted-foreground uppercase tracking-wider">
               Familienbaum
             </p>
             {treeNavigation.map((item) => {
@@ -99,10 +99,10 @@ export function AppSidebar({ user }: AppSidebarProps) {
                   key={item.name}
                   href={href}
                   className={cn(
-                    "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                     isActive
-                      ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                   )}
                 >
                   <item.icon className="h-4 w-4" />

@@ -34,7 +34,7 @@ export default async function TreePage({
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="border-b p-4">
+      <div className="bg-surface-low p-4">
         <h1 className="text-xl font-semibold">{tree.name}</h1>
         {tree.description && (
           <p className="text-sm text-muted-foreground">{tree.description}</p>

@@ -102,7 +102,7 @@ export function MediaOverview({
       </div>
 
       {filtered.length === 0 ? (
-        <Card className="border-dashed">
+        <Card className="bg-surface-container/50">
           <CardHeader className="items-center text-center py-12">
             <ImageIcon className="h-12 w-12 text-muted-foreground mb-4" />
             <CardTitle>Keine Medien</CardTitle>
@@ -113,7 +113,7 @@ export function MediaOverview({
           {filtered.map((m) => (
             <div
               key={m.id}
-              className="group relative rounded-lg border overflow-hidden"
+              className="group relative rounded-2xl bg-surface-low overflow-hidden shadow-ambient-sm"
             >
               {m.type === "image" ? (
                 <button
@@ -167,11 +167,11 @@ export function MediaOverview({
       {/* Lightbox */}
       {lightbox && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/80"
           onClick={() => setLightbox(null)}
         >
           <button
-            className="absolute top-4 right-4 text-white hover:text-gray-300"
+            className="absolute top-4 right-4 text-primary-foreground hover:text-primary-foreground/70"
             onClick={() => setLightbox(null)}
           >
             <X className="h-8 w-8" />
@@ -185,7 +185,7 @@ export function MediaOverview({
               className="object-contain max-h-[90vh]"
             />
             {lightbox.caption && (
-              <p className="text-center text-white mt-2">{lightbox.caption}</p>
+              <p className="text-center text-primary-foreground mt-2">{lightbox.caption}</p>
             )}
           </div>
         </div>

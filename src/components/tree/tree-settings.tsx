@@ -124,7 +124,7 @@ export function TreeSettings({ tree, members, isOwner }: TreeSettingsProps) {
             {memberList.map((member) => (
               <div
                 key={member.id}
-                className="flex items-center gap-3 rounded-md border p-3"
+                className="flex items-center gap-3 rounded-xl bg-surface-low p-3"
               >
                 {roleIcons[member.role]}
                 <div className="flex-1 min-w-0">
@@ -174,7 +174,7 @@ export function TreeSettings({ tree, members, isOwner }: TreeSettingsProps) {
                     onChange={(e) =>
                       setInviteRole(e.target.value as "editor" | "viewer")
                     }
-                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs"
+                    className="flex h-9 w-full rounded-sm border-0 border-b-2 border-on-surface-variant/30 bg-surface-high/40 px-3 py-1 text-sm"
                   >
                     <option value="editor">Bearbeiter</option>
                     <option value="viewer">Betrachter</option>
@@ -226,7 +226,7 @@ export function TreeSettings({ tree, members, isOwner }: TreeSettingsProps) {
           </div>
 
           {isOwner && (
-            <div className="border-t pt-4">
+            <div className="pt-4">
               <p className="text-sm font-medium mb-2">GEDCOM importieren</p>
               <p className="text-xs text-muted-foreground mb-3">
                 Importiere Personen und Relationen aus einer .ged Datei (Ancestry, MyHeritage etc.).

@@ -32,7 +32,7 @@ export function MediaGallery({ media }: MediaGalleryProps) {
             <button
               key={img.id}
               onClick={() => setLightbox(img)}
-              className="relative aspect-square rounded-md overflow-hidden border hover:opacity-90 transition-opacity"
+              className="relative aspect-square rounded-xl overflow-hidden bg-surface-container hover:opacity-90 transition-opacity"
             >
               <Image
                 src={img.url}
@@ -51,7 +51,7 @@ export function MediaGallery({ media }: MediaGalleryProps) {
         <div className="space-y-2">
           <p className="text-sm font-medium">Videos</p>
           {videos.map((vid) => (
-            <div key={vid.id} className="rounded-md border overflow-hidden">
+            <div key={vid.id} className="rounded-xl bg-surface-container overflow-hidden">
               <video controls className="w-full max-h-[400px]">
                 <source src={vid.url} type={vid.mimeType} />
               </video>
@@ -68,7 +68,7 @@ export function MediaGallery({ media }: MediaGalleryProps) {
         <div className="space-y-2">
           <p className="text-sm font-medium">Audio</p>
           {audio.map((aud) => (
-            <div key={aud.id} className="flex items-center gap-3 rounded-md border p-3">
+            <div key={aud.id} className="flex items-center gap-3 rounded-xl bg-surface-low p-3">
               <Music className="h-5 w-5 text-muted-foreground" />
               <div className="flex-1">
                 <p className="text-sm">{aud.caption || aud.originalFilename}</p>
@@ -91,7 +91,7 @@ export function MediaGallery({ media }: MediaGalleryProps) {
               href={doc.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 rounded-md border p-3 hover:bg-muted transition-colors"
+              className="flex items-center gap-3 rounded-xl bg-surface-low p-3 hover:bg-surface-container transition-colors"
             >
               <FileText className="h-5 w-5 text-muted-foreground" />
               <div>
@@ -108,11 +108,11 @@ export function MediaGallery({ media }: MediaGalleryProps) {
       {/* Lightbox */}
       {lightbox && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/80"
           onClick={() => setLightbox(null)}
         >
           <button
-            className="absolute top-4 right-4 text-white hover:text-gray-300"
+            className="absolute top-4 right-4 text-primary-foreground hover:text-primary-foreground/70"
             onClick={() => setLightbox(null)}
           >
             <X className="h-8 w-8" />
@@ -126,7 +126,7 @@ export function MediaGallery({ media }: MediaGalleryProps) {
               className="object-contain max-h-[90vh]"
             />
             {lightbox.caption && (
-              <p className="text-center text-white mt-2">{lightbox.caption}</p>
+              <p className="text-center text-primary-foreground mt-2">{lightbox.caption}</p>
             )}
           </div>
         </div>

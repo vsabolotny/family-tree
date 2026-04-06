@@ -68,7 +68,7 @@ export function StoriesOverview({
       )}
 
       {storyList.length === 0 ? (
-        <Card className="border-dashed">
+        <Card className="bg-surface-container/50">
           <CardHeader className="items-center text-center py-12">
             <BookOpen className="h-12 w-12 text-muted-foreground mb-4" />
             <CardTitle>Noch keine Geschichten</CardTitle>

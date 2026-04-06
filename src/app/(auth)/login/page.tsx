@@ -86,7 +86,7 @@ export default function LoginPage() {
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t" />
+              <div className="w-full h-px bg-outline-variant/15" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-card px-2 text-muted-foreground">oder</span>
@@ -122,7 +122,7 @@ export default function LoginPage() {
         <CardFooter className="justify-center">
           <p className="text-sm text-muted-foreground">
             Noch kein Konto?{" "}
-            <Link href="/register" className="text-primary hover:underline">
+            <Link href="/register" className="text-secondary-foreground hover:underline">
               Registrieren
             </Link>
           </p>

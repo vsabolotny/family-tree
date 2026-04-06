@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   TreePine,
   Users,
@@ -12,6 +13,7 @@ import {
   Settings,
   LogOut,
   LayoutDashboard,
+  Trash2,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -43,6 +45,7 @@ const treeNavigation = [
 
 export function AppSidebar({ user }: AppSidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
 
   const treeIdMatch = pathname.match(/\/tree\/([^/]+)/);
   const treeId = treeIdMatch?.[1];
@@ -120,6 +123,26 @@ export function AppSidebar({ user }: AppSidebarProps) {
           <p className="text-sm font-medium truncate">{user.name}</p>
           <p className="text-xs text-muted-foreground truncate">{user.email}</p>
         </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8 text-destructive hover:text-destructive"
+          title="Konto löschen"
+          onClick={async () => {
+            if (
+              !confirm(
+                "Konto wirklich löschen? Alle deine Daten werden unwiderruflich entfernt."
+              )
+            )
+              return;
+            if (!confirm("Bist du wirklich sicher? Dies kann nicht rückgängig gemacht werden."))
+              return;
+            await fetch("/api/account", { method: "DELETE" });
+            router.push("/");
+          }}
+        >
+          <Trash2 className="h-4 w-4" />
+        </Button>
         <form action="/api/auth/signout" method="POST">
           <Button variant="ghost" size="icon" className="h-8 w-8" type="submit">
             <LogOut className="h-4 w-4" />

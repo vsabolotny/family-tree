@@ -217,6 +217,12 @@ export function TreeSettings({ tree, members, isOwner }: TreeSettingsProps) {
                 PDF / Druckansicht
               </Button>
             </a>
+            <a href={`/api/trees/${tree.id}/export/json`} download>
+              <Button variant="outline">
+                <Download className="mr-2 h-4 w-4" />
+                JSON-Datenexport (DSGVO)
+              </Button>
+            </a>
           </div>
 
           {isOwner && (

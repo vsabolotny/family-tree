@@ -97,7 +97,12 @@ export default async function Home() {
       {/* Footer */}
       <footer className="border-t py-8">
         <div className="max-w-6xl mx-auto px-6 text-center text-sm text-muted-foreground">
-          <p>Stammbaum -- Dein digitales Familienarchiv. DSGVO-konform, gehostet in der EU.</p>
+          <p>
+            Stammbaum -- Dein digitales Familienarchiv. DSGVO-konform, gehostet in der EU.{" "}
+            <Link href="/datenschutz" className="text-primary hover:underline">
+              Datenschutz
+            </Link>
+          </p>
         </div>
       </footer>
     </div>

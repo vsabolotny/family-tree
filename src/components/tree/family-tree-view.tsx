@@ -13,6 +13,7 @@ import {
   type Edge,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import dagre from "dagre";
 import { PersonNode } from "./person-node";
 import { AddPersonDialog } from "@/components/person/add-person-dialog";
 import { Button } from "@/components/ui/button";
@@ -25,25 +26,14 @@ interface FamilyTreeViewProps {
   initialRelations: Relation[];
 }
 
-function layoutTree(persons: Person[], relations: Relation[]) {
-  const nodes: Node[] = [];
-  const edges: Edge[] = [];
+const NODE_WIDTH = 220;
+const NODE_HEIGHT = 80;
 
-  // Build adjacency: parent → children
-  const childrenMap = new Map<string, string[]>();
-  const parentMap = new Map<string, string[]>();
-  const spouseMap = new Map<string, string[]>();
+function layoutTree(persons: Person[], relations: Relation[]) {
+  const edges: Edge[] = [];
 
   for (const rel of relations) {
     if (rel.type === "parent_child") {
-      const children = childrenMap.get(rel.personAId) || [];
-      children.push(rel.personBId);
-      childrenMap.set(rel.personAId, children);
-
-      const parents = parentMap.get(rel.personBId) || [];
-      parents.push(rel.personAId);
-      parentMap.set(rel.personBId, parents);
-
       edges.push({
         id: `e-${rel.id}`,
         source: rel.personAId,
@@ -51,14 +41,6 @@ function layoutTree(persons: Person[], relations: Relation[]) {
         type: "smoothstep",
       });
     } else if (rel.type === "spouse") {
-      const spousesA = spouseMap.get(rel.personAId) || [];
-      spousesA.push(rel.personBId);
-      spouseMap.set(rel.personAId, spousesA);
-
-      const spousesB = spouseMap.get(rel.personBId) || [];
-      spousesB.push(rel.personAId);
-      spouseMap.set(rel.personBId, spousesB);
-
       edges.push({
         id: `e-${rel.id}`,
         source: rel.personAId,
@@ -69,86 +51,41 @@ function layoutTree(persons: Person[], relations: Relation[]) {
     }
   }
 
-  // Find roots (persons without parents)
-  const roots = persons.filter((p) => !parentMap.has(p.id));
-  if (roots.length === 0 && persons.length > 0) {
-    roots.push(persons[0]);
+  // Use dagre for hierarchical layout
+  const g = new dagre.graphlib.Graph();
+  g.setDefaultEdgeLabel(() => ({}));
+  g.setGraph({ rankdir: "TB", ranksep: 100, nodesep: 40 });
+
+  for (const person of persons) {
+    g.setNode(person.id, { width: NODE_WIDTH, height: NODE_HEIGHT });
   }
 
-  // BFS to assign levels
-  const levelMap = new Map<string, number>();
-  const visited = new Set<string>();
-  const queue: { id: string; level: number }[] = [];
-
-  for (const root of roots) {
-    if (!visited.has(root.id)) {
-      queue.push({ id: root.id, level: 0 });
-      visited.add(root.id);
-    }
+  for (const edge of edges) {
+    g.setEdge(edge.source, edge.target);
   }
 
-  while (queue.length > 0) {
-    const { id, level } = queue.shift()!;
-    levelMap.set(id, level);
+  dagre.layout(g);
 
-    const children = childrenMap.get(id) || [];
-    for (const childId of children) {
-      if (!visited.has(childId)) {
-        visited.add(childId);
-        queue.push({ id: childId, level: level + 1 });
-      }
-    }
-  }
-
-  // Place unvisited persons
-  for (const p of persons) {
-    if (!visited.has(p.id)) {
-      levelMap.set(p.id, 0);
-    }
-  }
-
-  // Group by level for x positioning
-  const levelGroups = new Map<number, string[]>();
-  for (const [id, level] of levelMap) {
-    const group = levelGroups.get(level) || [];
-    group.push(id);
-    levelGroups.set(level, group);
-  }
-
-  const NODE_WIDTH = 220;
-  const NODE_HEIGHT = 100;
-  const X_GAP = 40;
-  const Y_GAP = 120;
-
-  const personMap = new Map(persons.map((p) => [p.id, p]));
-
-  for (const [level, ids] of levelGroups) {
-    const totalWidth = ids.length * NODE_WIDTH + (ids.length - 1) * X_GAP;
-    const startX = -totalWidth / 2;
-
-    ids.forEach((id, index) => {
-      const person = personMap.get(id);
-      if (!person) return;
-
-      nodes.push({
-        id,
-        type: "person",
-        position: {
-          x: startX + index * (NODE_WIDTH + X_GAP),
-          y: level * (NODE_HEIGHT + Y_GAP),
-        },
-        data: {
-          firstName: person.firstName,
-          lastName: person.lastName,
-          birthDate: person.birthDate,
-          deathDate: person.deathDate,
-          gender: person.gender,
-          profileImageUrl: person.profileImageUrl,
-          isLiving: person.isLiving,
-        },
-      });
-    });
-  }
+  const nodes: Node[] = persons.map((person) => {
+    const pos = g.node(person.id);
+    return {
+      id: person.id,
+      type: "person",
+      position: {
+        x: (pos?.x ?? 0) - NODE_WIDTH / 2,
+        y: (pos?.y ?? 0) - NODE_HEIGHT / 2,
+      },
+      data: {
+        firstName: person.firstName,
+        lastName: person.lastName,
+        birthDate: person.birthDate,
+        deathDate: person.deathDate,
+        gender: person.gender,
+        profileImageUrl: person.profileImageUrl,
+        isLiving: person.isLiving,
+      },
+    };
+  });
 
   return { nodes, edges };
 }
